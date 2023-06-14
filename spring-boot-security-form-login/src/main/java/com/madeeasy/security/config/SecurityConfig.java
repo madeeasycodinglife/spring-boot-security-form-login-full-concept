@@ -112,6 +112,16 @@ public class SecurityConfig {
                         .invalidSessionUrl("/invalid-session")
                         .sessionFixation(sessionFixation -> sessionFixation.newSession())
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // if your application is API-driven or stateless use NEVER or STATELESS respectively
+                        /**
+                         * https://openclassrooms.com/en/courses/5683681-secure-your-web-application-with-spring-security/6695861-secure-your-sessions-and-cookies
+                         * The  .sessionFixation().migrateSession()  methods can be used to prevent users from being logged in more
+                         * than once. If a user is logged into a session on Computer A, and then logs in on Computer B, the session
+                         * on Computer A migrates to Computer B. This makes Computer A’s session invalid.
+                         *
+                         * It helps if you want to prevent people from sharing logins or a malicious user with unauthorized access
+                         * because this is the configuration that blocks concurrent sessions.
+                         */
+                        .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
                 )
                 .rememberMe(rememberMe -> rememberMe
                         /**
